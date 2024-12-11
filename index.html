@@ -6,11 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Team MMI - Juanyu Zhang, Yunyi Ru">
+<meta name="author" content="Team MMI">
 <meta name="dcterms.date" content="2024-12-11">
-<meta name="description" content="ADD YOUR PROJECT DESCRIPTION HERE">
+<meta name="description" content="JHSPH 140.777 Statistical Programming Final Project.">
 
-<title>Final Project: Weather-Disease Correlation Explorer</title>
+<title>Weather-Respiratory Diseases Correlation Explorer</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -102,12 +102,12 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Final Project: <em>Weather-Disease Correlation Explorer</em></h1>
+<h1 class="title">Weather-Respiratory Diseases Correlation Explorer</h1>
 </div>
 
 <div>
   <div class="description">
-    ADD YOUR PROJECT DESCRIPTION HERE
+    JHSPH 140.777 Statistical Programming Final Project.
   </div>
 </div>
 
@@ -117,7 +117,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Team MMI - Juanyu Zhang, Yunyi Ru </p>
+             <p>Team MMI </p>
           </div>
   </div>
     
@@ -136,6 +136,36 @@ div.csl-indent {
 </header>
 
 
+<table class="caption-top table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 41%">
+<col style="width: 13%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Job</th>
+<th>JHED</th>
+<th>E-mail</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Juanyu Zhang</td>
+<td>Interactive Dashboard</td>
+<td>jzhan398</td>
+<td>jzhan398@jh.edu</td>
+</tr>
+<tr class="even">
+<td>Yunyi Ru</td>
+<td>Data Gathering and Wrangling</td>
+<td>yru3</td>
+<td>yru3@jh.edu</td>
+</tr>
+</tbody>
+</table>
 <section id="project-overview" class="level1">
 <h1>Project Overview</h1>
 <p>We want to investigate the correlation between climate and weather-related conditions and outbreaks of two respiratory viruses, influenza and respiratory syncytial virus (RSV).</p>
@@ -155,10 +185,11 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'here'</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'tidyverse'</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'ggplot2'</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'lubridate'</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'knitr'</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'RSocrata'</span>) <span class="co"># a package to read socrata data - which is the way CDC datasets are stored. see CRAN documentation here: https://cran.r-project.org/web/packages/RSocrata/index.html</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'openmeteo'</span>) <span class="co"># a package to scrap data from openmeteo API. see CRAN documentation here: https://cran.r-project.org/web/packages/openmeteo/openmeteo.pdf</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'lubridate'</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'knitr'</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'RSocrata'</span>) <span class="co"># a package to read socrata data - which is the way CDC datasets are stored. see CRAN documentation here: https://cran.r-project.org/web/packages/RSocrata/index.html</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'openmeteo'</span>) <span class="co"># a package to scrap data from openmeteo API. see CRAN documentation here: https://cran.r-project.org/web/packages/openmeteo/openmeteo.pdf</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-data" class="level2">
@@ -442,7 +473,7 @@ div.csl-indent {
 </div>
 </div>
 <p>As is shown here, the RESP-NET data contains weekly disease incident data from 15 different states (Utah, Tennessee, Oregon, New York, New Mexico, Minnesota, Michigan, Maryland, Georgia, Connecticut, Colorado, California, North Carolina, Ohio, and Iowa - ‘Overall’ should be excluded) and 7 flu seasons (2018 to 2024).</p>
-<p>We then need to get weather data for those states in those time periods using the NWS API. We are using the coordinates for the geographic centers [you should add a ref link here!] for each state here.</p>
+<p>We then need to get weather data for those states in those time periods using the OpenMeteo API. We are using the coordinates for the geographic centers [you should add a ref link here!] for each state here.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the function to fetch weather data and add site information</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>fetch_weather_data <span class="ot">&lt;-</span> <span class="cf">function</span>(state, lat, lon) {</span>
@@ -465,57 +496,640 @@ div.csl-indent {
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      <span class="st">"et0_fao_evapotranspiration"</span></span>
 <span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  weather_data <span class="ot">&lt;-</span> weather_data <span class="sc">%&gt;%</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">site =</span> state)</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co"># check whether we have the file</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'weather.RDS'</span>))) {</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co"># if not, fetch data for each state using openmeteo</span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>wUtah <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Utah"</span>, <span class="fl">39.3055</span>, <span class="sc">-</span><span class="fl">111.6703</span>)</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>wTennessee <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Tennessee"</span>, <span class="fl">35.858</span>, <span class="sc">-</span><span class="fl">86.3505</span>)</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>wOregon <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Oregon"</span>, <span class="fl">43.9336</span>, <span class="sc">-</span><span class="fl">120.5583</span>)</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>wNewYork <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"New York"</span>, <span class="fl">42.9538</span>, <span class="sc">-</span><span class="fl">75.5268</span>)</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>wNewMexico <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"New Mexico"</span>, <span class="fl">34.4071</span>, <span class="sc">-</span><span class="fl">106.1126</span>)</span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>wMinnesota <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Minnesota"</span>, <span class="fl">46.2807</span>, <span class="sc">-</span><span class="fl">94.3053</span>)</span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>wMichigan <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Michigan"</span>, <span class="fl">44.3467</span>, <span class="sc">-</span><span class="fl">85.4102</span>)</span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>wMaryland <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Maryland"</span>, <span class="fl">39.0550</span>, <span class="sc">-</span><span class="fl">76.7909</span>)</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>wGeorgia <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Georgia"</span>, <span class="fl">32.6415</span>, <span class="sc">-</span><span class="fl">83.4426</span>)</span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>wConnecticut <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Connecticut"</span>, <span class="fl">41.6219</span>, <span class="sc">-</span><span class="fl">72.7273</span>)</span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>wColorado <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Colorado"</span>, <span class="fl">38.9972</span>, <span class="sc">-</span><span class="fl">105.5478</span>)</span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>wCalifornia <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"California"</span>, <span class="fl">37.1841</span>, <span class="sc">-</span><span class="fl">119.4696</span>)</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>wNorthCarolina <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"North Carolina"</span>, <span class="fl">35.5557</span>, <span class="sc">-</span><span class="fl">79.3877</span>)</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>wOhio <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Ohio"</span>, <span class="fl">40.2862</span>, <span class="sc">-</span><span class="fl">82.7937</span>)</span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>wIowa <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Iowa"</span>, <span class="fl">42.0751</span>, <span class="sc">-</span><span class="fl">93.4960</span>)</span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>weather <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>  wUtah,</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>  wTennessee,</span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>  wOregon,</span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>  wNewYork,</span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>  wNewMexico,</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>  wMinnesota,</span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>  wMichigan,</span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>  wMaryland,</span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>  wGeorgia,</span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>  wConnecticut,</span>
-<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>  wColorado,</span>
-<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>  wCalifornia,</span>
-<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>  wNorthCarolina,</span>
-<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>  wOhio,</span>
-<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>  wIowa</span>
-<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(weather, <span class="at">file =</span> <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"weather.RDS"</span>))</span>
-<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
-<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>weather <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"weather.RDS"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  weather_data <span class="ot">&lt;-</span> weather_data <span class="sc">%&gt;%</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">site =</span> state)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co"># check whether we have the file</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'weather.RDS'</span>))) {</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co"># if not, fetch data for each state using openmeteo</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>wUtah <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Utah"</span>, <span class="fl">39.3055</span>, <span class="sc">-</span><span class="fl">111.6703</span>)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>wTennessee <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Tennessee"</span>, <span class="fl">35.858</span>, <span class="sc">-</span><span class="fl">86.3505</span>)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>wOregon <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Oregon"</span>, <span class="fl">43.9336</span>, <span class="sc">-</span><span class="fl">120.5583</span>)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>wNewYork <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"New York"</span>, <span class="fl">42.9538</span>, <span class="sc">-</span><span class="fl">75.5268</span>)</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>wNewMexico <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"New Mexico"</span>, <span class="fl">34.4071</span>, <span class="sc">-</span><span class="fl">106.1126</span>)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>wMinnesota <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Minnesota"</span>, <span class="fl">46.2807</span>, <span class="sc">-</span><span class="fl">94.3053</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>wMichigan <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Michigan"</span>, <span class="fl">44.3467</span>, <span class="sc">-</span><span class="fl">85.4102</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>wMaryland <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Maryland"</span>, <span class="fl">39.0550</span>, <span class="sc">-</span><span class="fl">76.7909</span>)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>wGeorgia <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Georgia"</span>, <span class="fl">32.6415</span>, <span class="sc">-</span><span class="fl">83.4426</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>wConnecticut <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Connecticut"</span>, <span class="fl">41.6219</span>, <span class="sc">-</span><span class="fl">72.7273</span>)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>wColorado <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Colorado"</span>, <span class="fl">38.9972</span>, <span class="sc">-</span><span class="fl">105.5478</span>)</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>wCalifornia <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"California"</span>, <span class="fl">37.1841</span>, <span class="sc">-</span><span class="fl">119.4696</span>)</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>wNorthCarolina <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"North Carolina"</span>, <span class="fl">35.5557</span>, <span class="sc">-</span><span class="fl">79.3877</span>)</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>wOhio <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Ohio"</span>, <span class="fl">40.2862</span>, <span class="sc">-</span><span class="fl">82.7937</span>)</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>wIowa <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Iowa"</span>, <span class="fl">42.0751</span>, <span class="sc">-</span><span class="fl">93.4960</span>)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>weather <span class="ot">&lt;-</span> <span class="fu">rbind</span>(wUtah, wTennessee, wOregon, wNewYork, wNewMexico, wMinnesota, wMichigan, wMaryland, wGeorgia, wConnecticut, wColorado, wCalifornia, wNorthCarolina, wOhio, wIowa)</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(weather, <span class="at">file =</span> <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"weather.RDS"</span>))</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>weather <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"weather.RDS"</span>))</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="co"># have a look</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(weather))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 3%">
+<col style="width: 5%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 1%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">date</th>
+<th style="text-align: right;">daily_weather_code</th>
+<th style="text-align: right;">daily_temperature_2m_max</th>
+<th style="text-align: right;">daily_temperature_2m_min</th>
+<th style="text-align: right;">daily_precipitation_sum</th>
+<th style="text-align: right;">daily_precipitation_hours</th>
+<th style="text-align: right;">daily_sunshine_duration</th>
+<th style="text-align: right;">daily_daylight_duration</th>
+<th style="text-align: right;">daily_wind_speed_10m_max</th>
+<th style="text-align: right;">daily_wind_gusts_10m_max</th>
+<th style="text-align: right;">daily_wind_direction_10m_dominant</th>
+<th style="text-align: right;">daily_shortwave_radiation_sum</th>
+<th style="text-align: right;">daily_et0_fao_evapotranspiration</th>
+<th style="text-align: left;">site</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2018-01-01</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7.4</td>
+<td style="text-align: right;">-3.9</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">29058.57</td>
+<td style="text-align: right;">34052.62</td>
+<td style="text-align: right;">10.9</td>
+<td style="text-align: right;">28.8</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">9.61</td>
+<td style="text-align: right;">1.23</td>
+<td style="text-align: left;">Utah</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2018-01-02</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">5.6</td>
+<td style="text-align: right;">-4.0</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">30454.12</td>
+<td style="text-align: right;">34095.12</td>
+<td style="text-align: right;">10.3</td>
+<td style="text-align: right;">25.9</td>
+<td style="text-align: right;">348</td>
+<td style="text-align: right;">10.43</td>
+<td style="text-align: right;">1.20</td>
+<td style="text-align: left;">Utah</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2018-01-03</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">8.2</td>
+<td style="text-align: right;">-4.9</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">30505.15</td>
+<td style="text-align: right;">34141.05</td>
+<td style="text-align: right;">6.4</td>
+<td style="text-align: right;">18.0</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">9.61</td>
+<td style="text-align: right;">1.43</td>
+<td style="text-align: left;">Utah</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2018-01-04</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">9.6</td>
+<td style="text-align: right;">-1.5</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">30560.50</td>
+<td style="text-align: right;">34190.65</td>
+<td style="text-align: right;">6.5</td>
+<td style="text-align: right;">15.5</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">10.03</td>
+<td style="text-align: right;">1.58</td>
+<td style="text-align: left;">Utah</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2018-01-05</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">10.6</td>
+<td style="text-align: right;">0.2</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">30076.40</td>
+<td style="text-align: right;">34244.35</td>
+<td style="text-align: right;">9.2</td>
+<td style="text-align: right;">19.1</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">9.68</td>
+<td style="text-align: right;">1.68</td>
+<td style="text-align: left;">Utah</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2018-01-06</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">7.3</td>
+<td style="text-align: right;">0.3</td>
+<td style="text-align: right;">4.1</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">34302.04</td>
+<td style="text-align: right;">8.4</td>
+<td style="text-align: right;">26.6</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">2.85</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: left;">Utah</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </section>
 <section id="data-wrangling" class="level2">
 <h2 class="anchored" data-anchor-id="data-wrangling">Data Wrangling</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Processing weather data</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># lubridate</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>weather <span class="ot">&lt;-</span> weather <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">ymd</span>(date),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">week =</span> <span class="fu">epiweek</span>(date),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="fu">year</span>(date),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_w =</span> <span class="fu">paste</span>(year, week, <span class="at">sep =</span> <span class="st">"_"</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># from daily to weekly weather data (all average)</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>week_weather <span class="ot">&lt;-</span> weather <span class="sc">%&gt;%</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(y_w, site, year, week) <span class="sc">%&gt;%</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">temp_max =</span> <span class="fu">mean</span>(daily_temperature_2m_max),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">temp_min =</span> <span class="fu">mean</span>(daily_temperature_2m_min), </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">precip_sum =</span> <span class="fu">mean</span>(daily_precipitation_sum),</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">precip_hr =</span> <span class="fu">mean</span>(daily_precipitation_hours), </span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">sunshine =</span> <span class="fu">mean</span>(daily_sunshine_duration), </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">daylight =</span> <span class="fu">mean</span>(daily_daylight_duration),</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">wind_speed_max =</span> <span class="fu">mean</span>(daily_wind_speed_10m_max),</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">wind_gusts_max =</span> <span class="fu">mean</span>(daily_wind_gusts_10m_max), </span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">wind_direction =</span> <span class="fu">atan2</span>(<span class="fu">mean</span>(<span class="fu">sin</span>(daily_wind_direction_10m_dominant <span class="sc">*</span> pi <span class="sc">/</span> <span class="dv">180</span>)), <span class="fu">mean</span>(<span class="fu">cos</span>(daily_wind_direction_10m_dominant <span class="sc">*</span> pi <span class="sc">/</span> <span class="dv">180</span>))) <span class="sc">*</span> <span class="dv">180</span> <span class="sc">/</span> pi <span class="sc">%%</span> <span class="dv">360</span>,</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">wind_direction =</span> <span class="fu">if_else</span>(wind_direction <span class="sc">&lt;</span> <span class="dv">0</span>, wind_direction <span class="sc">+</span> <span class="dv">360</span>, wind_direction), <span class="co"># calculate wind direction average</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">shortwave =</span> <span class="fu">mean</span>(daily_shortwave_radiation_sum),</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">evapo =</span> <span class="fu">mean</span>(daily_et0_fao_evapotranspiration)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span> <span class="fu">round</span>(., <span class="dv">2</span>)), <span class="co"># round</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">wind_direction_cardinal =</span> <span class="fu">case_when</span>(</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="fl">22.5</span> <span class="sc">~</span> <span class="st">"N"</span>,</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="fl">22.5</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="dv">45</span> <span class="sc">~</span> <span class="st">"NNE"</span>,</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="dv">45</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="fl">67.5</span> <span class="sc">~</span> <span class="st">"NE"</span>,</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="fl">67.5</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="dv">90</span> <span class="sc">~</span> <span class="st">"ENE"</span>,</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="dv">90</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="fl">112.5</span> <span class="sc">~</span> <span class="st">"E"</span>,</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="fl">112.5</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="dv">135</span> <span class="sc">~</span> <span class="st">"ESE"</span>,</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="dv">135</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="fl">157.5</span> <span class="sc">~</span> <span class="st">"SE"</span>,</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="fl">157.5</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="dv">180</span> <span class="sc">~</span> <span class="st">"SSE"</span>,</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="dv">180</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="fl">202.5</span> <span class="sc">~</span> <span class="st">"S"</span>,</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="fl">202.5</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="dv">225</span> <span class="sc">~</span> <span class="st">"SSW"</span>,</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="dv">225</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="fl">247.5</span> <span class="sc">~</span> <span class="st">"SW"</span>,</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="fl">247.5</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="dv">270</span> <span class="sc">~</span> <span class="st">"WSW"</span>,</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="dv">270</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="fl">292.5</span> <span class="sc">~</span> <span class="st">"W"</span>,</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="fl">292.5</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="dv">315</span> <span class="sc">~</span> <span class="st">"WNW"</span>,</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="dv">315</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;</span> <span class="fl">337.5</span> <span class="sc">~</span> <span class="st">"NW"</span>,</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>      wind_direction <span class="sc">&gt;=</span> <span class="fl">337.5</span> <span class="sc">&amp;</span> wind_direction <span class="sc">&lt;=</span> <span class="dv">360</span> <span class="sc">~</span> <span class="st">"NNW"</span>,</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>    ) <span class="co"># set cardinal for wind data</span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'y_w', 'site', 'year'. You can override
+using the `.groups` argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Processing flu and RSV data</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># rbind</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>RESPdat <span class="ot">&lt;-</span> <span class="fu">rbind</span>(fludat, RSVdat)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># check if all overall data</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(RESPdat<span class="sc">$</span>age_group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Overall"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(RESPdat<span class="sc">$</span>sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Overall"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(RESPdat<span class="sc">$</span>race_ethnicity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Overall"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># basic data wrangling, lubridate</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>RESPdat.clean <span class="ot">&lt;-</span> RESPdat <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(site <span class="sc">!=</span> <span class="st">'Overall'</span>) <span class="sc">%&gt;%</span> <span class="co"># exclude overall data</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">ymd_hms</span>(X_weekenddate),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">mmwr_year =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(mmwr_year, <span class="dv">0</span>)),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">mmwr_week =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(mmwr_week, <span class="dv">0</span>)), </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="fu">year</span>(date),</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">week =</span> <span class="fu">epiweek</span>(date),</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_w =</span> <span class="fu">paste</span>(mmwr_year, mmwr_week, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">pathogen =</span> <span class="fu">ifelse</span>(surveillance_network <span class="sc">==</span> <span class="st">"RSV-NET"</span>, <span class="st">"RSV"</span>, <span class="st">"influenza"</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>         ) <span class="sc">%&gt;%</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>mmwr_year, <span class="sc">-</span>mmwr_week, <span class="sc">-</span>surveillance_network, <span class="sc">-</span>season, <span class="sc">-</span>age_group, <span class="sc">-</span>sex, <span class="sc">-</span>race_ethnicity, <span class="sc">-</span>X_weekenddate, <span class="sc">-</span>type)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co"># bind RESPdat.clean and week_weather together</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>RESP_weather <span class="ot">&lt;-</span> <span class="fu">left_join</span>(RESPdat.clean, week_weather, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"y_w"</span>, <span class="st">"site"</span>, <span class="st">"year"</span>, <span class="st">"week"</span>))</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>RESP_weather <span class="ot">&lt;-</span> RESP_weather <span class="sc">%&gt;%</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">weekly_rate =</span> <span class="fu">as.numeric</span>(weekly_rate), </span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">cumulative_rate =</span> <span class="fu">as.numeric</span>(cumulative_rate))</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co"># have a look!</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(RESP_weather))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 7%">
+<col style="width: 4%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 4%">
+<col style="width: 2%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">site</th>
+<th style="text-align: right;">weekly_rate</th>
+<th style="text-align: right;">cumulative_rate</th>
+<th style="text-align: left;">date</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: right;">week</th>
+<th style="text-align: left;">y_w</th>
+<th style="text-align: left;">pathogen</th>
+<th style="text-align: right;">temp_max</th>
+<th style="text-align: right;">temp_min</th>
+<th style="text-align: right;">precip_sum</th>
+<th style="text-align: right;">precip_hr</th>
+<th style="text-align: right;">sunshine</th>
+<th style="text-align: right;">daylight</th>
+<th style="text-align: right;">wind_speed_max</th>
+<th style="text-align: right;">wind_gusts_max</th>
+<th style="text-align: right;">wind_direction</th>
+<th style="text-align: right;">shortwave</th>
+<th style="text-align: right;">evapo</th>
+<th style="text-align: left;">wind_direction_cardinal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">North Carolina</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">121</td>
+<td style="text-align: left;">2024-09-28</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">2024_39</td>
+<td style="text-align: left;">influenza</td>
+<td style="text-align: right;">28.10</td>
+<td style="text-align: right;">19.76</td>
+<td style="text-align: right;">10.91</td>
+<td style="text-align: right;">8.14</td>
+<td style="text-align: right;">29093.92</td>
+<td style="text-align: right;">43264.00</td>
+<td style="text-align: right;">15.84</td>
+<td style="text-align: right;">37.39</td>
+<td style="text-align: right;">132.70</td>
+<td style="text-align: right;">13.96</td>
+<td style="text-align: right;">2.86</td>
+<td style="text-align: left;">ESE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">North Carolina</td>
+<td style="text-align: right;">0.2</td>
+<td style="text-align: right;">121</td>
+<td style="text-align: left;">2024-09-21</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: left;">2024_38</td>
+<td style="text-align: left;">influenza</td>
+<td style="text-align: right;">26.04</td>
+<td style="text-align: right;">18.20</td>
+<td style="text-align: right;">9.51</td>
+<td style="text-align: right;">7.71</td>
+<td style="text-align: right;">30440.10</td>
+<td style="text-align: right;">44200.58</td>
+<td style="text-align: right;">16.71</td>
+<td style="text-align: right;">37.97</td>
+<td style="text-align: right;">39.50</td>
+<td style="text-align: right;">15.00</td>
+<td style="text-align: right;">2.91</td>
+<td style="text-align: left;">NNE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">North Carolina</td>
+<td style="text-align: right;">0.2</td>
+<td style="text-align: right;">121</td>
+<td style="text-align: left;">2024-09-14</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: left;">2024_37</td>
+<td style="text-align: left;">influenza</td>
+<td style="text-align: right;">26.29</td>
+<td style="text-align: right;">15.83</td>
+<td style="text-align: right;">1.97</td>
+<td style="text-align: right;">2.57</td>
+<td style="text-align: right;">33986.51</td>
+<td style="text-align: right;">45131.54</td>
+<td style="text-align: right;">13.64</td>
+<td style="text-align: right;">30.84</td>
+<td style="text-align: right;">68.38</td>
+<td style="text-align: right;">19.13</td>
+<td style="text-align: right;">3.86</td>
+<td style="text-align: left;">ENE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">North Carolina</td>
+<td style="text-align: right;">0.2</td>
+<td style="text-align: right;">121</td>
+<td style="text-align: left;">2024-09-07</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">2024_36</td>
+<td style="text-align: left;">influenza</td>
+<td style="text-align: right;">27.91</td>
+<td style="text-align: right;">17.89</td>
+<td style="text-align: right;">7.83</td>
+<td style="text-align: right;">4.00</td>
+<td style="text-align: right;">36183.91</td>
+<td style="text-align: right;">46042.66</td>
+<td style="text-align: right;">13.17</td>
+<td style="text-align: right;">32.21</td>
+<td style="text-align: right;">19.42</td>
+<td style="text-align: right;">19.69</td>
+<td style="text-align: right;">4.12</td>
+<td style="text-align: left;">N</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">North Carolina</td>
+<td style="text-align: right;">0.3</td>
+<td style="text-align: right;">121</td>
+<td style="text-align: left;">2024-08-31</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: left;">2024_35</td>
+<td style="text-align: left;">influenza</td>
+<td style="text-align: right;">32.69</td>
+<td style="text-align: right;">18.96</td>
+<td style="text-align: right;">1.59</td>
+<td style="text-align: right;">0.43</td>
+<td style="text-align: right;">40573.59</td>
+<td style="text-align: right;">46946.33</td>
+<td style="text-align: right;">11.03</td>
+<td style="text-align: right;">24.49</td>
+<td style="text-align: right;">148.88</td>
+<td style="text-align: right;">21.74</td>
+<td style="text-align: right;">4.60</td>
+<td style="text-align: left;">SE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">North Carolina</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: left;">2024-08-24</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: left;">2024_34</td>
+<td style="text-align: left;">influenza</td>
+<td style="text-align: right;">28.01</td>
+<td style="text-align: right;">16.70</td>
+<td style="text-align: right;">1.13</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">43876.01</td>
+<td style="text-align: right;">47820.40</td>
+<td style="text-align: right;">11.17</td>
+<td style="text-align: right;">28.91</td>
+<td style="text-align: right;">31.24</td>
+<td style="text-align: right;">23.51</td>
+<td style="text-align: right;">4.63</td>
+<td style="text-align: left;">NNE</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save data</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(RESP_weather, <span class="at">file =</span> <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"RESP_weather.RDS"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="data-visualization">Data Visualization</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># basic respiratory virus data visualization</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># influenza</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>RESP_weather_flu <span class="ot">&lt;-</span> RESP_weather <span class="sc">%&gt;%</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(pathogen <span class="sc">==</span> <span class="st">"influenza"</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(RESP_weather_flu, <span class="fu">aes</span>(<span class="at">x =</span> week, <span class="at">y =</span> weekly_rate, <span class="at">color =</span> <span class="fu">as.character</span>(year))) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">xmax =</span> <span class="dv">20</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>), <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="st">"#eeeeee"</span>, <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="dv">40</span>, <span class="at">xmax =</span> <span class="cn">Inf</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>), <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="st">"#eeeeee"</span>, <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>site) <span class="sc">+</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Set2'</span>) <span class="sc">+</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">'Weekly Rates of Influenza-Associated Hospitalizations by State, from 2018 to 2024'</span>,</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">'Data Source: CDC RESP-NET'</span>,</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">'Biostats 140.777 Project 4, Team MMI'</span>,</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">'Hospitalization rate per 100,000'</span>,</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">'Epidemiology Week'</span>, </span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">'Year'</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in geom_rect(aes(xmin = -Inf, xmax = 20, ymin = -Inf, ymax = Inf), : All aesthetics have length 1, but the data has 2553 rows.
+ℹ Please consider using `annotate()` or provide this layer with data containing
+  a single row.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in geom_rect(aes(xmin = 40, xmax = Inf, ymin = -Inf, ymax = Inf), : All aesthetics have length 1, but the data has 2553 rows.
+ℹ Please consider using `annotate()` or provide this layer with data containing
+  a single row.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rsv</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>RESP_weather_RSV <span class="ot">&lt;-</span> RESP_weather <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(pathogen <span class="sc">==</span> <span class="st">"RSV"</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(RESP_weather_RSV, <span class="fu">aes</span>(<span class="at">x =</span> week, <span class="at">y =</span> weekly_rate, <span class="at">color =</span> <span class="fu">as.character</span>(year))) <span class="sc">+</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">xmax =</span> <span class="dv">20</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>), <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="st">"#eeeeee"</span>, <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="dv">40</span>, <span class="at">xmax =</span> <span class="cn">Inf</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>), <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="st">"#eeeeee"</span>, <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>site) <span class="sc">+</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Set2'</span>) <span class="sc">+</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">'Weekly Rates of RSV-Associated Hospitalizations by State, from 2018 to 2024'</span>,</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">'Data Source: CDC RESP-NET'</span>,</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">'Biostats 140.777 Project 4, Team MMI'</span>,</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">'Hospitalization rate per 100,000'</span>,</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">'Epidemiology Week'</span>, </span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">'Year'</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in geom_rect(aes(xmin = -Inf, xmax = 20, ymin = -Inf, ymax = Inf), : All aesthetics have length 1, but the data has 3345 rows.
+ℹ Please consider using `annotate()` or provide this layer with data containing
+  a single row.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in geom_rect(aes(xmin = 40, xmax = Inf, ymin = -Inf, ymax = Inf), : All aesthetics have length 1, but the data has 3345 rows.
+ℹ Please consider using `annotate()` or provide this layer with data containing
+  a single row.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># basic weather data display</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># temperature &amp; precipitation</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(RESP_weather, <span class="fu">aes</span>(<span class="at">x =</span> week, <span class="at">y =</span> weekly_rate, <span class="at">color =</span> <span class="fu">as.character</span>(year))) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">xmax =</span> <span class="dv">20</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>), <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="st">"#eeeeee"</span>, <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="dv">40</span>, <span class="at">xmax =</span> <span class="cn">Inf</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>), <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="st">"#eeeeee"</span>, <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>site) <span class="sc">+</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Set2'</span>) <span class="sc">+</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">'Weekly Rates of Influenza-Associated Hospitalizations by State, from 2018 to 2024'</span>,</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">'Data Source: CDC RESP-NET'</span>,</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">'Biostats 140.777 Project 4, Team MMI'</span>,</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">'Hospitalization rate per 100,000'</span>,</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">'Epidemiology Week'</span>, </span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">'Year'</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in geom_rect(aes(xmin = -Inf, xmax = 20, ymin = -Inf, ymax = Inf), : All aesthetics have length 1, but the data has 5898 rows.
+ℹ Please consider using `annotate()` or provide this layer with data containing
+  a single row.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in geom_rect(aes(xmin = 40, xmax = Inf, ymin = -Inf, ymax = Inf), : All aesthetics have length 1, but the data has 5898 rows.
+ℹ Please consider using `annotate()` or provide this layer with data containing
+  a single row.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'shinydashboard'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:graphics':
+
+    box</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UI</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">dashboardPage</span>(</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardHeader</span>(<span class="at">title =</span> <span class="st">"Weekly Rates"</span>),</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardSidebar</span>(</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">"state"</span>, <span class="st">"Select State:"</span>, </span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">choices =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>site), </span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">selected =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>site)[<span class="dv">1</span>]),</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">"year"</span>, <span class="st">"Select Year:"</span>, </span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">choices =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>year), </span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">selected =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>year)[<span class="dv">1</span>], </span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">multiple =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">"pathogen"</span>, <span class="st">"Select Pathogen:"</span>, </span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">choices =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>pathogen), </span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">selected =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>pathogen)[<span class="dv">1</span>], </span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">multiple =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardBody</span>(</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fluidRow</span>(</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">box</span>(<span class="at">title =</span> <span class="st">"Weekly Rates of Repiratory Virus Infection-Associated Hospitalizations"</span>,</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>          <span class="at">width =</span> <span class="dv">12</span>,</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>          <span class="fu">plotOutput</span>(<span class="st">"rsvPlot"</span>, <span class="at">height =</span> <span class="st">"600px"</span>))</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Server</span></span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>  filtered_data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>    RESP_weather <span class="sc">%&gt;%</span></span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(site <span class="sc">==</span> input<span class="sc">$</span>state, year <span class="sc">%in%</span> input<span class="sc">$</span>year, pathogen <span class="sc">%in%</span> input<span class="sc">$</span>pathogen)</span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>rsvPlot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">filtered_data</span>(), <span class="fu">aes</span>(<span class="at">x =</span> week, <span class="at">y =</span> weekly_rate, <span class="at">color =</span> <span class="fu">as.character</span>(year), <span class="at">shape =</span> pathogen, <span class="at">linetype =</span> pathogen)) <span class="sc">+</span></span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">xmax =</span> <span class="dv">20</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>), </span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>                <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="st">"#eeeeee"</span>, <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="dv">40</span>, <span class="at">xmax =</span> <span class="cn">Inf</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>), </span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>                <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="st">"#eeeeee"</span>, <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>      <span class="fu">facet_wrap</span>(<span class="sc">~</span>site) <span class="sc">+</span></span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Set2'</span>) <span class="sc">+</span></span>
+<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(</span>
+<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">'Data Source: CDC RESP-NET'</span>,</span>
+<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">'Biostats 140.777 Project 4, Team MMI'</span>,</span>
+<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">'Hospitalization rate per 100,000'</span>,</span>
+<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">'Epidemiology Week'</span>, </span>
+<span id="cb31-49"><a href="#cb31-49" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">'Year'</span></span>
+<span id="cb31-50"><a href="#cb31-50" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb31-51"><a href="#cb31-51" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>()</span>
+<span id="cb31-52"><a href="#cb31-52" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb31-53"><a href="#cb31-53" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-54"><a href="#cb31-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-55"><a href="#cb31-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the app</span></span>
+<span id="cb31-56"><a href="#cb31-56" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p></p><div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div><p></p>
+</div>
+</div>
 </section>
 <section id="dashboard" class="level2">
 <h2 class="anchored" data-anchor-id="dashboard">Dashboard</h2>
