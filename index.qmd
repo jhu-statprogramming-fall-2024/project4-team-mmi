@@ -9,13 +9,11 @@ bibliography:
   - my-refs.bib
 ---
 
-hello im yyr
-
 # Project Overview
 
 We want to investigate the correlation between climate and weather-related conditions and outbreaks of two respiratory viruses, influenza and respiratory syncytial virus (RSV).
 
-Influenza is an RNA virus from the *Orthomyxoviridae* family that frequently mutates, causing seasonal epidemics, while RSV is an RNA virus from the *Paramyxoviridae* family that primarily affects young children and the elderly, often leading to severe lower respiratory infections. 
+Influenza is an RNA virus from the *Orthomyxoviridae* family that frequently mutates, causing seasonal epidemics, while RSV is an RNA virus from the *Paramyxoviridae* family that primarily affects young children and the elderly, often leading to severe lower respiratory infections.
 
 Both viruses pose significant public health challenges due to their widespread transmission and potential for severe disease.
 
@@ -23,7 +21,7 @@ Climate and weather conditions can influence the activity and spread of both vir
 
 # Project Goals
 
-In this project, we plan to integrate weather data and disease incidence data together to perform correlation and regression analysis, and to build an interactive dashboard showing those relationships. If possible, we also want to build a machine learning model to predict potential disease outbreaks based on weather data. 
+In this project, we plan to integrate weather data and disease incidence data together to perform correlation and regression analysis, and to build an interactive dashboard showing those relationships. If possible, we also want to build a machine learning model to predict potential disease outbreaks based on weather data.
 
 # Project
 
@@ -37,6 +35,9 @@ library('lubridate')
 library('knitr')
 library('RSocrata') # a package to read socrata data - which is the way CDC datasets are stored. see CRAN documentation here: https://cran.r-project.org/web/packages/RSocrata/index.html
 library('openmeteo') # a package to scrap data from openmeteo API. see CRAN documentation here: https://cran.r-project.org/web/packages/openmeteo/openmeteo.pdf
+library('shiny')
+library('shinydashboard')
+library('shinyjs')
 ```
 
 ## Load Data
@@ -76,7 +77,7 @@ union(unique(RSVdat$season), unique(fludat$season))
 
 As is shown here, the RESP-NET data contains weekly disease incident data from 15 different states (Utah, Tennessee, Oregon, New York, New Mexico, Minnesota, Michigan, Maryland, Georgia, Connecticut, Colorado, California, North Carolina, Ohio, and Iowa - 'Overall' should be excluded) and 7 flu seasons (2018 to 2024).
 
-We then need to get weather data for those states in those time periods using the OpenMeteo API. We are using the coordinates for the geographic centers [you should add a ref link here!] for each state here. 
+We then need to get weather data for those states in those time periods using the OpenMeteo API. We are using the coordinates for the geographic centers \[you should add a ref link here!\] for each state here.
 
 ```{r load_data_weather}
 # Define the function to fetch weather data and add site information
@@ -205,12 +206,99 @@ RESPdat.clean <- RESPdat %>%
   select(-mmwr_year, -mmwr_week, -surveillance_network, -season, -age_group, -sex, -race_ethnicity, -X_weekenddate, -type)
 
 # bind RESPdat.clean and week_weather together
+# bind RESPdat.clean and week_weather together
 RESP_weather <- left_join(RESPdat.clean, week_weather, by = c("y_w", "site", "year", "week"))
+RESP_weather <- RESP_weather %>%
+  drop_na() %>%
+  mutate(weekly_rate = as.numeric(weekly_rate), 
+         cumulative_rate = as.numeric(cumulative_rate))# bind RESPdat.clean and week_weather together
+RESP_weather <- left_join(RESPdat.clean, week_weather, by = c("y_w", "site", "year", "week"))
+RESP_weather <- RESP_weather %>%
+  drop_na() %>%
+  mutate(weekly_rate = as.numeric(weekly_rate), 
+         cumulative_rate = as.numeric(cumulative_rate))
+
 ```
 
 ## Dashboard
 
 ```{r dashboard}
+library(shiny)
+library(shinydashboard)
+library(ggplot2)
+library(dplyr)
+
+weather_labels <- c(
+  "temp_max" = "Maximum Temperature",
+  "temp_min" = "Minimum Temperature",
+  "precip_sum" = "Precipitation",
+  "sunshine" = "Sunshine",
+  "daylight" = "Daylight",
+  "wind_speed_max" = "Maximum Wind Speed"
+)
+
+ui <- dashboardPage(
+  dashboardHeader(title = "Pathogen & Weather Relationship Explorer"),
+  dashboardSidebar(
+    selectInput("state", "Select State", choices = unique(RESP_weather$site), selected = "California"),
+    selectInput("pathogen", "Select Pathogen", choices = unique(RESP_weather$pathogen), selected = "RSV"),
+    sliderInput("year_range", "Select Year Range", min = min(RESP_weather$year), max = max(RESP_weather$year), value = c(2018, 2024)),
+    selectInput("weather_var", "Select Weather Variable", choices = c("Maximun Temperature" = "temp_max", "Minimun Temperature" = "temp_min", "Precipitation" = "precip_sum", "Sunshine" = "sunshine", "Daylight" = "daylight", "Maximun Wind Speed" = "wind_speed_max"), selected = "temp_max"),
+    checkboxInput("show_trend", "Show Trend Line", value = TRUE)
+  ),
+  dashboardBody(
+    plotOutput("scatter_plot")
+  )
+)
+
+server <- function(input, output) {
+  filtered_data <- reactive({
+    RESP_weather %>%
+      filter(
+        site == input$state,
+        pathogen == input$pathogen,
+        year >= input$year_range[1],
+        year <= input$year_range[2],
+        !is.na(get(input$weather_var)),   # Use get() to refer to dynamic column names
+        !is.na(weekly_rate)
+      )
+  })
+  output$scatter_plot <- renderPlot({
+    data <- filtered_data()
+    if (nrow(data) == 0) {
+      return(NULL)
+    }
+    model <- lm(weekly_rate ~ get(input$weather_var), data = data)  # Use get() for dynamic column name
+    r_squared <- summary(model)$r.squared
+    p <- ggplot(data, aes(x = get(input$weather_var), y = weekly_rate)) +
+      geom_point(alpha = 0.7, color = "#3498db", size = 3) +
+      labs(
+        x = weather_labels[input$weather_var],
+        y = "Weekly Rate",
+        title = paste("Relationship Between", input$pathogen, "with", weather_labels[input$weather_var], "in", input$state)
+      ) +
+      theme_minimal(base_size = 15) +
+      theme(
+        plot.title = element_text(hjust = 0.5, size = 18, color = "#2c3e50"),
+        axis.title = element_text(size = 14, color = "#2c3e50"),
+        axis.text = element_text(size = 12),
+        panel.grid.major = element_line(color = "#ecf0f1", size = 0.5),
+        panel.grid.minor = element_line(color = "#bdc3c7", size = 0.25)
+      )
+    if (input$show_trend) {
+      p <- p + geom_smooth(method = "lm", color = "#e74c3c", size = 1)
+    }
+    p + annotate(
+      "text", x = 0.8 * max(data[[input$weather_var]], na.rm = TRUE), 
+      y = 0.9 * max(data$weekly_rate, na.rm = TRUE),
+      label = paste("R² =", round(r_squared, 2)),
+      color = "#2c3e50", size = 5
+    )
+  })
+}
+
+shinyApp(ui, server)
+
 
 ```
 
@@ -218,5 +306,5 @@ RESP_weather <- left_join(RESPdat.clean, week_weather, by = c("y_w", "site", "ye
 
 ```{r ml}
 
-```
 
+```

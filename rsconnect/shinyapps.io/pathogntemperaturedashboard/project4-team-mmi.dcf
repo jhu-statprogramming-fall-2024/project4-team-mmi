@@ -1,0 +1,12 @@
+name: project4-team-mmi
+title: project4-team-mmi
+username: pathogntemperaturedashboard
+account: pathogntemperaturedashboard
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13580851
+bundleId: 9505504
+url: https://pathogntemperaturedashboard.shinyapps.io/project4-team-mmi/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
