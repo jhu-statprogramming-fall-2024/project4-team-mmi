@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.33">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -86,10 +86,10 @@ div.csl-indent {
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="index_files/libs/quarto-html/anchor.min.js"></script>
 <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-07ba0ad10f5680c660e360ac31d2f3b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/bootstrap/bootstrap-fe6593aca1dacbc749dc3d2ba78c8639.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -496,6 +496,7 @@ div.csl-indent {
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      <span class="st">"et0_fao_evapotranspiration"</span></span>
 <span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<<<<<<< HEAD
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  weather_data <span class="ot">&lt;-</span> weather_data <span class="sc">%&gt;%</span></span>
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">site =</span> state)</span>
 <span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>}</span>
@@ -665,6 +666,39 @@ div.csl-indent {
 </tbody>
 </table>
 </div>
+=======
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  weather_data <span class="ot">&lt;-</span> weather_data <span class="sc">%&gt;%</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">site =</span> state)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co"># check whether we have the file</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'weather.RDS'</span>))) {</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co"># if not, fetch data for each state using openmeteo</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>wUtah <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Utah"</span>, <span class="fl">39.3055</span>, <span class="sc">-</span><span class="fl">111.6703</span>)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>wTennessee <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Tennessee"</span>, <span class="fl">35.858</span>, <span class="sc">-</span><span class="fl">86.3505</span>)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>wOregon <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Oregon"</span>, <span class="fl">43.9336</span>, <span class="sc">-</span><span class="fl">120.5583</span>)</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>wNewYork <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"New York"</span>, <span class="fl">42.9538</span>, <span class="sc">-</span><span class="fl">75.5268</span>)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>wNewMexico <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"New Mexico"</span>, <span class="fl">34.4071</span>, <span class="sc">-</span><span class="fl">106.1126</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>wMinnesota <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Minnesota"</span>, <span class="fl">46.2807</span>, <span class="sc">-</span><span class="fl">94.3053</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>wMichigan <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Michigan"</span>, <span class="fl">44.3467</span>, <span class="sc">-</span><span class="fl">85.4102</span>)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>wMaryland <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Maryland"</span>, <span class="fl">39.0550</span>, <span class="sc">-</span><span class="fl">76.7909</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>wGeorgia <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Georgia"</span>, <span class="fl">32.6415</span>, <span class="sc">-</span><span class="fl">83.4426</span>)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>wConnecticut <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Connecticut"</span>, <span class="fl">41.6219</span>, <span class="sc">-</span><span class="fl">72.7273</span>)</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>wColorado <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Colorado"</span>, <span class="fl">38.9972</span>, <span class="sc">-</span><span class="fl">105.5478</span>)</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>wCalifornia <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"California"</span>, <span class="fl">37.1841</span>, <span class="sc">-</span><span class="fl">119.4696</span>)</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>wNorthCarolina <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"North Carolina"</span>, <span class="fl">35.5557</span>, <span class="sc">-</span><span class="fl">79.3877</span>)</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>wOhio <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Ohio"</span>, <span class="fl">40.2862</span>, <span class="sc">-</span><span class="fl">82.7937</span>)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>wIowa <span class="ot">&lt;-</span> <span class="fu">fetch_weather_data</span>(<span class="st">"Iowa"</span>, <span class="fl">42.0751</span>, <span class="sc">-</span><span class="fl">93.4960</span>)</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>weather <span class="ot">&lt;-</span> <span class="fu">rbind</span>(wUtah, wTennessee, wOregon, wNewYork, wNewMexico, wMinnesota, wMichigan, wMaryland, wGeorgia, wConnecticut, wColorado, wCalifornia, wNorthCarolina, wOhio, wIowa)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(weather, <span class="at">file =</span> <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"weather.RDS"</span>))</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>weather <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"weather.RDS"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+>>>>>>> 4f8d14533d5bfc6f436def413b733879f4c60536
 </div>
 </section>
 <section id="data-wrangling" class="level2">
@@ -746,11 +780,16 @@ using the `.groups` argument.</code></pre>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="fu">year</span>(date),</span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">week =</span> <span class="fu">epiweek</span>(date),</span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_w =</span> <span class="fu">paste</span>(mmwr_year, mmwr_week, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
+<<<<<<< HEAD
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">pathogen =</span> <span class="fu">ifelse</span>(surveillance_network <span class="sc">==</span> <span class="st">"RSV-NET"</span>, <span class="st">"RSV"</span>, <span class="st">"influenza"</span>)</span>
+=======
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">pathogen =</span> <span class="fu">ifelse</span>(surveillance_network <span class="sc">==</span> <span class="st">"RSV-NET"</span>, <span class="st">"RSV"</span>, <span class="st">"influenza"</span>), </span>
+>>>>>>> 4f8d14533d5bfc6f436def413b733879f4c60536
 <span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>         ) <span class="sc">%&gt;%</span></span>
 <span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>mmwr_year, <span class="sc">-</span>mmwr_week, <span class="sc">-</span>surveillance_network, <span class="sc">-</span>season, <span class="sc">-</span>age_group, <span class="sc">-</span>sex, <span class="sc">-</span>race_ethnicity, <span class="sc">-</span>X_weekenddate, <span class="sc">-</span>type)</span>
 <span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co"># bind RESPdat.clean and week_weather together</span></span>
+<<<<<<< HEAD
 <span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>RESP_weather <span class="ot">&lt;-</span> <span class="fu">left_join</span>(RESPdat.clean, week_weather, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"y_w"</span>, <span class="st">"site"</span>, <span class="st">"year"</span>, <span class="st">"week"</span>))</span>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>RESP_weather <span class="ot">&lt;-</span> RESP_weather <span class="sc">%&gt;%</span></span>
 <span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span></span>
@@ -1129,6 +1168,9 @@ Attaching package: 'shinydashboard'</code></pre>
 <div class="cell-output-display">
 <p></p><div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div><p></p>
 </div>
+=======
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>RESP_weather <span class="ot">&lt;-</span> <span class="fu">left_join</span>(RESPdat.clean, week_weather, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"y_w"</span>, <span class="st">"site"</span>, <span class="st">"year"</span>, <span class="st">"week"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+>>>>>>> 4f8d14533d5bfc6f436def413b733879f4c60536
 </div>
 </section>
 <section id="dashboard" class="level2">
