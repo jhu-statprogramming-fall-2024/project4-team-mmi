@@ -1,0 +1,49 @@
+---
+title: "Final Project: *Weather-Disease Correlation Explorer*"
+author: 
+  - name: Team MMI - Juanyu Zhang, Yunyi Ru
+description: "ADD YOUR PROJECT DESCRIPTION HERE"
+date: 2024-12-11
+knitr: true
+bibliography:
+  - my-refs.bib
+---
+
+# Project Overview
+
+# Project Goals
+
+# Project
+
+## Set Up
+
+```{r set_up, message = FALSE, warning = FALSE}
+library('here')
+library('tidyverse')
+library('ggplot2')
+```
+
+## Load Data
+
+```{r load_data}
+
+```
+
+## Data Wrangling
+
+```{r data_wrangling}
+
+```
+
+## Dashboard
+
+```{r dashboard}
+
+```
+
+## Machine Learning
+
+```{r ml}
+
+```
+

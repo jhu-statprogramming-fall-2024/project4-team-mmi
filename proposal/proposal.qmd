@@ -39,7 +39,13 @@ Weather data will be collected through the [National Weather Service (NWS) API](
 
 Disease incidence data will be collected from the [CDC National Notifiable Diseases Surveillance System (NNDSS)](https://www.cdc.gov/nndss/data-statistics/infectious-tables/index.html) [@noauthor_notifiable_2023].
 
-All of the data sources mentioned above are open to the public and downloadable from the website.
+All of the data sources mentioned above are open to the public and downloadable from the website. They also provide APIs. 
+
+For example: 
+
+[RSV-NET](https://data.cdc.gov/Public-Health-Surveillance/Weekly-Rates-of-Laboratory-Confirmed-RSV-Hospitali/29hc-w46k/about_data)
+
+![](rsv_net_API.png)
 
 **6. You should describe the programming paradigms you plan to use and why it makes sense to combine them for your project**
 
