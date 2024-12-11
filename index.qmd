@@ -11,7 +11,17 @@ bibliography:
 
 # Project Overview
 
+We want to investigate the correlation between climate and weather-related conditions and outbreaks of two respiratory viruses, influenza and respiratory syncytial virus (RSV).
+
+Influenza is an RNA virus from the *Orthomyxoviridae* family that frequently mutates, causing seasonal epidemics, while RSV is an RNA virus from the *Paramyxoviridae* family that primarily affects young children and the elderly, often leading to severe lower respiratory infections. 
+
+Both viruses pose significant public health challenges due to their widespread transmission and potential for severe disease.
+
+Climate and weather conditions can influence the activity and spread of both viruses. Studies have suggested that factors like cold temperatures, low indoor humidity, limited sunlight, and rapid weather changes may increase the risk of outbreaks [@carter-templeton_associations_2022] [@chong_association_2022] [@fdez-arroyabe_effects_2021] [@linssen_association_2021].
+
 # Project Goals
+
+In this project, we plan to integrate weather data and disease incidence data together to perform correlation and regression analysis, and to build an interactive dashboard showing those relationships. If possible, we also want to build a machine learning model to predict potential disease outbreaks based on weather data. 
 
 # Project
 
@@ -21,13 +31,64 @@ bibliography:
 library('here')
 library('tidyverse')
 library('ggplot2')
+library('lubridate')
+library('knitr')
+library('RSocrata') # a package to read socrata data - which is the way CDC datasets are stored. see CRAN documentation here: https://cran.r-project.org/web/packages/RSocrata/index.html
 ```
 
 ## Load Data
 
-```{r load_data}
+Disease rate data were scrapped from CDC RESP-NET API.
 
+[RESP-NET](https://data.cdc.gov/Public-Health-Surveillance/Rates-of-Laboratory-Confirmed-RSV-COVID-19-and-Flu/kvib-3txy/about_data)
+
+[RESP-NET API Socrata](https://dev.socrata.com/foundry/data.cdc.gov/kvib-3txy)
+
+```{r load_data_RESP}
+# extract data
+rds_files <- c("RSVdat.RDS", 
+               "fludat.RDS",
+               "weather.RDS")
+
+# Check whether we have all files
+if (any(!file.exists(here("data", rds_files)))) {
+  # If we don't, then download the data
+  RSVdat <- read.socrata('https://data.cdc.gov/resource/kvib-3txy.json?surveillance_network=RSV-NET&age_group=Overall&sex=Overall&race_ethnicity=Overall')
+  fludat <- read.socrata('https://data.cdc.gov/resource/kvib-3txy.json?surveillance_network=FluSurv-NET&age_group=Overall&sex=Overall&race_ethnicity=Overall')
+  # Then save the data objects to RDS files
+  saveRDS(RSVdat, file = here("data", "RSVdat.RDS"))
+  saveRDS(fludat, file = here("data", "fludat.RDS"))
+}
+
+# load data
+RSVdat <- readRDS(here("data", "RSVdat.RDS"))
+fludat <- readRDS(here("data", "fludat.RDS"))
+
+# have a look at the data
+kable(head(RSVdat))
+kable(head(fludat))
+union(unique(RSVdat$site), unique(fludat$site))
+union(unique(RSVdat$season), unique(fludat$season))
 ```
+As is shown here, the RESP-NET data contains weekly disease incident data from 15 different states (Utah, Tennessee, Oregon, New York, New Mexico, Minnesota, Michigan, Maryland, Georgia, Connecticut, Colorado, California, North Carolina, Ohio, and Iowa - 'Overall' should be excluded) and 7 flu seasons (2018 to 2024).
+
+We then need to get weather data for those states in those time periods using the NWS API. We are using the coordinates for the geographic centers [you should add a ref link here!] for each state here. 
+
+```{r load_data_NWS}
+# get weather data from NWS
+token <- "NfFLADoGBRFuHObzUDrBrwnJyUWDUOaO"
+
+# Base URL for the NOAA API
+base_url <- "https://www.ncei.noaa.gov/cdo-web/api/v2/"
+
+# define coordinates for state centers
+state_coords <- data.frame(
+  state = c("Utah", "Tennessee", "Oregon", "New York", "New Mexico", "Minnesota", "Michigan", "Maryland", "Georgia", "Connecticut", "Colorado", "California", "North Carolina", "Ohio", "Iowa"),
+  lat = c(39.3055, 35.858, 43.9336, 42.9538, 34.4071, 46.2807, 44.3467, 39.055, 32.6415, 41.6219, 38.9972, 37.1841, 35.5557, 40.2862, 42.0751),
+  lon = c(-111.6703, -86.3505, -120.5583, -75.5268, -106.1126, -94.3053, -85.4102, -76.7909, -83.4426, -72.7273, -105.5478, -119.4696, -79.3877, -82.7937, -93.496)
+)
+```
+
 
 ## Data Wrangling
 
