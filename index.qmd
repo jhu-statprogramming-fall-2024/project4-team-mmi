@@ -122,23 +122,7 @@ wNorthCarolina <- fetch_weather_data("North Carolina", 35.5557, -79.3877)
 wOhio <- fetch_weather_data("Ohio", 40.2862, -82.7937)
 wIowa <- fetch_weather_data("Iowa", 42.0751, -93.4960)
 
-weather <- rbind(
-  wUtah,
-  wTennessee,
-  wOregon,
-  wNewYork,
-  wNewMexico,
-  wMinnesota,
-  wMichigan,
-  wMaryland,
-  wGeorgia,
-  wConnecticut,
-  wColorado,
-  wCalifornia,
-  wNorthCarolina,
-  wOhio,
-  wIowa
-)
+weather <- rbind(wUtah, wTennessee, wOregon, wNewYork, wNewMexico, wMinnesota, wMichigan, wMaryland, wGeorgia, wConnecticut, wColorado, wCalifornia, wNorthCarolina, wOhio, wIowa)
 
 saveRDS(weather, file = here("data", "weather.RDS"))
 }
@@ -150,7 +134,76 @@ weather <- readRDS(here("data", "weather.RDS"))
 ## Data Wrangling
 
 ```{r data_wrangling}
-#
+# Processing weather data
+# lubridate
+weather <- weather %>%
+  mutate(date = ymd(date),
+         week = epiweek(date),
+         year = year(date),
+         y_w = paste(year, week, sep = "_"))
+
+# from daily to weekly weather data (all average)
+week_weather <- weather %>%
+  group_by(y_w, site, year, week) %>%
+  summarise(
+         temp_max = mean(daily_temperature_2m_max),
+         temp_min = mean(daily_temperature_2m_min), 
+         precip_sum = mean(daily_precipitation_sum),
+         precip_hr = mean(daily_precipitation_hours), 
+         sunshine = mean(daily_sunshine_duration), 
+         daylight = mean(daily_daylight_duration),
+         wind_speed_max = mean(daily_wind_speed_10m_max),
+         wind_gusts_max = mean(daily_wind_gusts_10m_max), 
+         wind_direction = atan2(mean(sin(daily_wind_direction_10m_dominant * pi / 180)), mean(cos(daily_wind_direction_10m_dominant * pi / 180))) * 180 / pi %% 360,
+         wind_direction = if_else(wind_direction < 0, wind_direction + 360, wind_direction), # calculate wind direction average
+         shortwave = mean(daily_shortwave_radiation_sum),
+         evapo = mean(daily_et0_fao_evapotranspiration)
+  ) %>%
+  mutate(across(where(is.numeric), ~ round(., 2)), # round
+    wind_direction_cardinal = case_when(
+      wind_direction >= 0 & wind_direction < 22.5 ~ "N",
+      wind_direction >= 22.5 & wind_direction < 45 ~ "NNE",
+      wind_direction >= 45 & wind_direction < 67.5 ~ "NE",
+      wind_direction >= 67.5 & wind_direction < 90 ~ "ENE",
+      wind_direction >= 90 & wind_direction < 112.5 ~ "E",
+      wind_direction >= 112.5 & wind_direction < 135 ~ "ESE",
+      wind_direction >= 135 & wind_direction < 157.5 ~ "SE",
+      wind_direction >= 157.5 & wind_direction < 180 ~ "SSE",
+      wind_direction >= 180 & wind_direction < 202.5 ~ "S",
+      wind_direction >= 202.5 & wind_direction < 225 ~ "SSW",
+      wind_direction >= 225 & wind_direction < 247.5 ~ "SW",
+      wind_direction >= 247.5 & wind_direction < 270 ~ "WSW",
+      wind_direction >= 270 & wind_direction < 292.5 ~ "W",
+      wind_direction >= 292.5 & wind_direction < 315 ~ "WNW",
+      wind_direction >= 315 & wind_direction < 337.5 ~ "NW",
+      wind_direction >= 337.5 & wind_direction <= 360 ~ "NNW",
+      TRUE ~ NA_character_
+    ) # set cardinal for wind data
+  ) %>%
+  ungroup()
+
+# Processing flu and RSV data
+# rbind
+RESPdat <- rbind(fludat, RSVdat)
+# check if all overall data
+unique(RESPdat$age_group)
+unique(RESPdat$sex)
+unique(RESPdat$race_ethnicity)
+# basic data wrangling, lubridate
+RESPdat.clean <- RESPdat %>%
+  filter(site != 'Overall') %>% # exclude overall data
+  mutate(date = ymd_hms(X_weekenddate),
+         mmwr_year = round(as.numeric(mmwr_year, 0)),
+         mmwr_week = round(as.numeric(mmwr_week, 0)), 
+         year = year(date),
+         week = epiweek(date),
+         y_w = paste(mmwr_year, mmwr_week, sep = "_"),
+         pathogen = ifelse(surveillance_network == "RSV-NET", "RSV", "influenza"), 
+         ) %>%
+  select(-mmwr_year, -mmwr_week, -surveillance_network, -season, -age_group, -sex, -race_ethnicity, -X_weekenddate, -type)
+
+# bind RESPdat.clean and week_weather together
+RESP_weather <- left_join(RESPdat.clean, week_weather, by = c("y_w", "site", "year", "week"))
 ```
 
 ## Dashboard
