@@ -34,6 +34,7 @@ library('ggplot2')
 library('lubridate')
 library('knitr')
 library('RSocrata') # a package to read socrata data - which is the way CDC datasets are stored. see CRAN documentation here: https://cran.r-project.org/web/packages/RSocrata/index.html
+library('openmeteo') # a package to scrap data from openmeteo API. see CRAN documentation here: https://cran.r-project.org/web/packages/openmeteo/openmeteo.pdf
 ```
 
 ## Load Data
@@ -70,30 +71,86 @@ kable(head(fludat))
 union(unique(RSVdat$site), unique(fludat$site))
 union(unique(RSVdat$season), unique(fludat$season))
 ```
+
 As is shown here, the RESP-NET data contains weekly disease incident data from 15 different states (Utah, Tennessee, Oregon, New York, New Mexico, Minnesota, Michigan, Maryland, Georgia, Connecticut, Colorado, California, North Carolina, Ohio, and Iowa - 'Overall' should be excluded) and 7 flu seasons (2018 to 2024).
 
-We then need to get weather data for those states in those time periods using the NWS API. We are using the coordinates for the geographic centers [you should add a ref link here!] for each state here. 
+We then need to get weather data for those states in those time periods using the OpenMeteo API. We are using the coordinates for the geographic centers [you should add a ref link here!] for each state here. 
 
-```{r load_data_NWS}
-# get weather data from NWS
-token <- "NfFLADoGBRFuHObzUDrBrwnJyUWDUOaO"
+```{r load_data_weather}
+# Define the function to fetch weather data and add site information
+fetch_weather_data <- function(state, lat, lon) {
+  weather_data <- weather_history(
+    c(lat, lon),
+    start = "2018-01-01",
+    end = "2024-11-30",
+    daily = c(
+      "weather_code",
+      "temperature_2m_max",
+      "temperature_2m_min",
+      "precipitation_sum",
+      "precipitation_hours",
+      "sunshine_duration",
+      "daylight_duration",
+      "wind_speed_10m_max",
+      "wind_gusts_10m_max",
+      "wind_direction_10m_dominant",
+      "shortwave_radiation_sum",
+      "et0_fao_evapotranspiration"
+    )
+  )
+  
+  weather_data <- weather_data %>%
+    mutate(site = state)
+}
 
-# Base URL for the NOAA API
-base_url <- "https://www.ncei.noaa.gov/cdo-web/api/v2/"
+# check whether we have the file
+if (!file.exists(here('data', 'weather.RDS'))) {
+# if not, fetch data for each state using openmeteo
+wUtah <- fetch_weather_data("Utah", 39.3055, -111.6703)
+wTennessee <- fetch_weather_data("Tennessee", 35.858, -86.3505)
+wOregon <- fetch_weather_data("Oregon", 43.9336, -120.5583)
+wNewYork <- fetch_weather_data("New York", 42.9538, -75.5268)
+wNewMexico <- fetch_weather_data("New Mexico", 34.4071, -106.1126)
+wMinnesota <- fetch_weather_data("Minnesota", 46.2807, -94.3053)
+wMichigan <- fetch_weather_data("Michigan", 44.3467, -85.4102)
+wMaryland <- fetch_weather_data("Maryland", 39.0550, -76.7909)
+wGeorgia <- fetch_weather_data("Georgia", 32.6415, -83.4426)
+wConnecticut <- fetch_weather_data("Connecticut", 41.6219, -72.7273)
+wColorado <- fetch_weather_data("Colorado", 38.9972, -105.5478)
+wCalifornia <- fetch_weather_data("California", 37.1841, -119.4696)
+wNorthCarolina <- fetch_weather_data("North Carolina", 35.5557, -79.3877)
+wOhio <- fetch_weather_data("Ohio", 40.2862, -82.7937)
+wIowa <- fetch_weather_data("Iowa", 42.0751, -93.4960)
 
-# define coordinates for state centers
-state_coords <- data.frame(
-  state = c("Utah", "Tennessee", "Oregon", "New York", "New Mexico", "Minnesota", "Michigan", "Maryland", "Georgia", "Connecticut", "Colorado", "California", "North Carolina", "Ohio", "Iowa"),
-  lat = c(39.3055, 35.858, 43.9336, 42.9538, 34.4071, 46.2807, 44.3467, 39.055, 32.6415, 41.6219, 38.9972, 37.1841, 35.5557, 40.2862, 42.0751),
-  lon = c(-111.6703, -86.3505, -120.5583, -75.5268, -106.1126, -94.3053, -85.4102, -76.7909, -83.4426, -72.7273, -105.5478, -119.4696, -79.3877, -82.7937, -93.496)
+weather <- rbind(
+  wUtah,
+  wTennessee,
+  wOregon,
+  wNewYork,
+  wNewMexico,
+  wMinnesota,
+  wMichigan,
+  wMaryland,
+  wGeorgia,
+  wConnecticut,
+  wColorado,
+  wCalifornia,
+  wNorthCarolina,
+  wOhio,
+  wIowa
 )
-```
 
+saveRDS(weather, file = here("data", "weather.RDS"))
+}
+
+# load data
+weather <- readRDS(here("data", "weather.RDS"))
+```
 
 ## Data Wrangling
 
 ```{r data_wrangling}
-
+#
 ```
 
 ## Dashboard
