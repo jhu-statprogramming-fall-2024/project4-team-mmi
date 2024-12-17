@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Team MMI">
-<meta name="dcterms.date" content="2024-12-11">
+<meta name="dcterms.date" content="2024-12-19">
 <meta name="description" content="JHSPH 140.777 Statistical Programming Final Project.">
 
 <title>Weather-Respiratory Diseases Correlation Explorer</title>
@@ -124,7 +124,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 11, 2024</p>
+      <p class="date">December 19, 2024</p>
     </div>
   </div>
   
@@ -136,17 +136,12 @@ div.csl-indent {
 </header>
 
 
+<section id="team-and-contacts" class="level1">
+<h1>Team and Contacts</h1>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 19%">
-<col style="width: 41%">
-<col style="width: 13%">
-<col style="width: 25%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
-<th>Job</th>
 <th>JHED</th>
 <th>E-mail</th>
 </tr>
@@ -154,18 +149,17 @@ div.csl-indent {
 <tbody>
 <tr class="odd">
 <td>Juanyu Zhang</td>
-<td>Interactive Dashboard</td>
 <td>jzhan398</td>
 <td>jzhan398@jh.edu</td>
 </tr>
 <tr class="even">
 <td>Yunyi Ru</td>
-<td>Data Gathering and Wrangling</td>
 <td>yru3</td>
 <td>yru3@jh.edu</td>
 </tr>
 </tbody>
 </table>
+</section>
 <section id="project-overview" class="level1">
 <h1>Project Overview</h1>
 <p>We want to investigate the correlation between climate and weather-related conditions and outbreaks of two respiratory viruses, influenza and respiratory syncytial virus (RSV).</p>
@@ -190,10 +184,7 @@ div.csl-indent {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'knitr'</span>)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'RSocrata'</span>) <span class="co"># a package to read socrata data - which is the way CDC datasets are stored. see CRAN documentation here: https://cran.r-project.org/web/packages/RSocrata/index.html</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'openmeteo'</span>) <span class="co"># a package to scrap data from openmeteo API. see CRAN documentation here: https://cran.r-project.org/web/packages/openmeteo/openmeteo.pdf</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'reshape2'</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'shiny'</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'shinydashboard'</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'shinyjs'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'reshape2'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-data" class="level2">
@@ -1034,162 +1025,30 @@ using the `.groups` argument.</code></pre>
 </figure>
 </div>
 </div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># corr heatmap</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># all relationship</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'corrplot'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>corrplot 0.95 loaded</code></pre>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># UI</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">dashboardPage</span>(</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardHeader</span>(<span class="at">title =</span> <span class="st">"Weekly Rates"</span>),</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardSidebar</span>(</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">"state"</span>, <span class="st">"Select State:"</span>, </span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">choices =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>site), </span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">selected =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>site)[<span class="dv">1</span>]),</span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">"year"</span>, <span class="st">"Select Year:"</span>, </span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">choices =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>year), </span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">selected =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>year)[<span class="dv">1</span>], </span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">multiple =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">"pathogen"</span>, <span class="st">"Select Pathogen:"</span>, </span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">choices =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>pathogen), </span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">selected =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>pathogen)[<span class="dv">1</span>], </span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">multiple =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardBody</span>(</span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fluidRow</span>(</span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">box</span>(<span class="at">title =</span> <span class="st">"Weekly Rates of Repiratory Virus Infection-Associated Hospitalizations"</span>,</span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>          <span class="at">width =</span> <span class="dv">12</span>,</span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>          <span class="fu">plotOutput</span>(<span class="st">"rsvPlot"</span>, <span class="at">height =</span> <span class="st">"600px"</span>))</span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Server</span></span>
-<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
-<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>  filtered_data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
-<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>    RESP_weather <span class="sc">%&gt;%</span></span>
-<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(site <span class="sc">==</span> input<span class="sc">$</span>state, year <span class="sc">%in%</span> input<span class="sc">$</span>year, pathogen <span class="sc">%in%</span> input<span class="sc">$</span>pathogen)</span>
-<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>rsvPlot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
-<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">filtered_data</span>(), <span class="fu">aes</span>(<span class="at">x =</span> week, <span class="at">y =</span> weekly_rate, <span class="at">color =</span> <span class="fu">as.character</span>(year), <span class="at">shape =</span> pathogen, <span class="at">linetype =</span> pathogen)) <span class="sc">+</span></span>
-<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">xmax =</span> <span class="dv">20</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>), </span>
-<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>                <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="st">"#eeeeee"</span>, <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="dv">40</span>, <span class="at">xmax =</span> <span class="cn">Inf</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>), </span>
-<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a>                <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="st">"#eeeeee"</span>, <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a>      <span class="fu">facet_wrap</span>(<span class="sc">~</span>site) <span class="sc">+</span></span>
-<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Set2'</span>) <span class="sc">+</span></span>
-<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(</span>
-<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">'Data Source: CDC RESP-NET'</span>,</span>
-<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">'Biostats 140.777 Project 4, Team MMI'</span>,</span>
-<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">'Hospitalization rate per 100,000'</span>,</span>
-<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">'Epidemiology Week'</span>, </span>
-<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">'Year'</span></span>
-<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
-<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>()</span>
-<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the app</span></span>
-<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>RESP_weather_corr <span class="ot">&lt;-</span> RESP_weather <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>cumulative_rate, <span class="sc">-</span>year, <span class="sc">-</span>week)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>corr_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(RESP_weather_corr <span class="sc">%&gt;%</span> <span class="fu">select_if</span>(is.numeric), <span class="at">use =</span> <span class="st">'complete.obs'</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(corr_matrix, <span class="at">type =</span> <span class="st">'lower'</span>, <span class="at">diag =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p></p><div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div><p></p>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-</section>
-<section id="dashboard" class="level2">
-<h2 class="anchored" data-anchor-id="dashboard">Dashboard</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>weather_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"temp_max"</span> <span class="ot">=</span> <span class="st">"Maximum Temperature"</span>,</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"temp_min"</span> <span class="ot">=</span> <span class="st">"Minimum Temperature"</span>,</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"precip_sum"</span> <span class="ot">=</span> <span class="st">"Precipitation"</span>,</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"sunshine"</span> <span class="ot">=</span> <span class="st">"Sunshine"</span>,</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"daylight"</span> <span class="ot">=</span> <span class="st">"Daylight"</span>,</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"wind_speed_max"</span> <span class="ot">=</span> <span class="st">"Maximum Wind Speed"</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">dashboardPage</span>(</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardHeader</span>(<span class="at">title =</span> <span class="st">"Pathogen &amp; Weather Relationship Explorer"</span>),</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardSidebar</span>(</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">"state"</span>, <span class="st">"Select State"</span>, <span class="at">choices =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>site), <span class="at">selected =</span> <span class="st">"California"</span>),</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">"pathogen"</span>, <span class="st">"Select Pathogen"</span>, <span class="at">choices =</span> <span class="fu">unique</span>(RESP_weather<span class="sc">$</span>pathogen), <span class="at">selected =</span> <span class="st">"RSV"</span>),</span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sliderInput</span>(<span class="st">"year_range"</span>, <span class="st">"Select Year Range"</span>, <span class="at">min =</span> <span class="fu">min</span>(RESP_weather<span class="sc">$</span>year), <span class="at">max =</span> <span class="fu">max</span>(RESP_weather<span class="sc">$</span>year), <span class="at">value =</span> <span class="fu">c</span>(<span class="dv">2018</span>, <span class="dv">2024</span>)),</span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">"weather_var"</span>, <span class="st">"Select Weather Variable"</span>, <span class="at">choices =</span> <span class="fu">c</span>(<span class="st">"Maximun Temperature"</span> <span class="ot">=</span> <span class="st">"temp_max"</span>, <span class="st">"Minimun Temperature"</span> <span class="ot">=</span> <span class="st">"temp_min"</span>, <span class="st">"Precipitation"</span> <span class="ot">=</span> <span class="st">"precip_sum"</span>, <span class="st">"Sunshine"</span> <span class="ot">=</span> <span class="st">"sunshine"</span>, <span class="st">"Daylight"</span> <span class="ot">=</span> <span class="st">"daylight"</span>, <span class="st">"Maximun Wind Speed"</span> <span class="ot">=</span> <span class="st">"wind_speed_max"</span>), <span class="at">selected =</span> <span class="st">"temp_max"</span>),</span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">checkboxInput</span>(<span class="st">"show_trend"</span>, <span class="st">"Show Trend Line"</span>, <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dashboardBody</span>(</span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plotOutput</span>(<span class="st">"scatter_plot"</span>)</span>
-<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) {</span>
-<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>  filtered_data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
-<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>    RESP_weather <span class="sc">%&gt;%</span></span>
-<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(</span>
-<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>        site <span class="sc">==</span> input<span class="sc">$</span>state,</span>
-<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>        pathogen <span class="sc">==</span> input<span class="sc">$</span>pathogen,</span>
-<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>        year <span class="sc">&gt;=</span> input<span class="sc">$</span>year_range[<span class="dv">1</span>],</span>
-<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>        year <span class="sc">&lt;=</span> input<span class="sc">$</span>year_range[<span class="dv">2</span>],</span>
-<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>        <span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">get</span>(input<span class="sc">$</span>weather_var)),   <span class="co"># Use get() to refer to dynamic column names</span></span>
-<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>        <span class="sc">!</span><span class="fu">is.na</span>(weekly_rate)</span>
-<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>scatter_plot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
-<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> <span class="fu">filtered_data</span>()</span>
-<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(data) <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
-<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>    model <span class="ot">&lt;-</span> <span class="fu">lm</span>(weekly_rate <span class="sc">~</span> <span class="fu">get</span>(input<span class="sc">$</span>weather_var), <span class="at">data =</span> data)  <span class="co"># Use get() for dynamic column name</span></span>
-<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a>    r_squared <span class="ot">&lt;-</span> <span class="fu">summary</span>(model)<span class="sc">$</span>r.squared</span>
-<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">get</span>(input<span class="sc">$</span>weather_var), <span class="at">y =</span> weekly_rate)) <span class="sc">+</span></span>
-<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"#3498db"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(</span>
-<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> weather_labels[input<span class="sc">$</span>weather_var],</span>
-<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Weekly Rate"</span>,</span>
-<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Relationship Between"</span>, input<span class="sc">$</span>pathogen, <span class="st">"with"</span>, weather_labels[input<span class="sc">$</span>weather_var], <span class="st">"in"</span>, input<span class="sc">$</span>state)</span>
-<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
-<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
-<span id="cb26-56"><a href="#cb26-56" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(</span>
-<span id="cb26-57"><a href="#cb26-57" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">18</span>, <span class="at">color =</span> <span class="st">"#2c3e50"</span>),</span>
-<span id="cb26-58"><a href="#cb26-58" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">color =</span> <span class="st">"#2c3e50"</span>),</span>
-<span id="cb26-59"><a href="#cb26-59" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
-<span id="cb26-60"><a href="#cb26-60" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"#ecf0f1"</span>, <span class="at">size =</span> <span class="fl">0.5</span>),</span>
-<span id="cb26-61"><a href="#cb26-61" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"#bdc3c7"</span>, <span class="at">size =</span> <span class="fl">0.25</span>)</span>
-<span id="cb26-62"><a href="#cb26-62" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb26-63"><a href="#cb26-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (input<span class="sc">$</span>show_trend) {</span>
-<span id="cb26-64"><a href="#cb26-64" aria-hidden="true" tabindex="-1"></a>      p <span class="ot">&lt;-</span> p <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"#e74c3c"</span>, <span class="at">size =</span> <span class="dv">1</span>)</span>
-<span id="cb26-65"><a href="#cb26-65" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb26-66"><a href="#cb26-66" aria-hidden="true" tabindex="-1"></a>    p <span class="sc">+</span> <span class="fu">annotate</span>(</span>
-<span id="cb26-67"><a href="#cb26-67" aria-hidden="true" tabindex="-1"></a>      <span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">max</span>(data[[input<span class="sc">$</span>weather_var]], <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb26-68"><a href="#cb26-68" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">0.9</span> <span class="sc">*</span> <span class="fu">max</span>(data<span class="sc">$</span>weekly_rate, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb26-69"><a href="#cb26-69" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste</span>(<span class="st">"R² ="</span>, <span class="fu">round</span>(r_squared, <span class="dv">2</span>)),</span>
-<span id="cb26-70"><a href="#cb26-70" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">"#2c3e50"</span>, <span class="at">size =</span> <span class="dv">5</span></span>
-<span id="cb26-71"><a href="#cb26-71" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-72"><a href="#cb26-72" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb26-73"><a href="#cb26-73" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-74"><a href="#cb26-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-75"><a href="#cb26-75" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p></p><div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div><p></p>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-</section>
-<section id="machine-learning" class="level2 unnumbered">
-
 
 </section>
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Machine Learning</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-carter-templeton_associations_2022" class="csl-entry" role="listitem">
 Carter-Templeton, Heather, Gary F. Templeton, Leslie H. Nicoll, Latrice Maxie, Theresa S. Kittle, Susan A. Jasko, Eric E. Carpenter, and Karen A. Monsen. 2022. <span>“Associations Between Weather-Related Data and Influenza Reports: <span>A</span> Pilot Study and Related Policy Implications.”</span> <em>Applied Nursing Research: ANR</em> 67 (October): 151413. <a href="https://doi.org/10.1016/j.apnr.2021.151413">https://doi.org/10.1016/j.apnr.2021.151413</a>.
 </div>

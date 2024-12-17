@@ -46,10 +46,10 @@ Weather data were scrapped from Openmeteo API.
 
 ### Relationship Between Disease Rates and Environmental Factors
 
-![Heatmap](heatmap.png){width=100%}
+![Heatmap](heatmap.png){width=50%}
 
 ### Summary of RESP-NET Data from 2018 to 2024
 
-![fluepi](fluepi.png){width=100%}
+![fluepi](fluepi.png){width=80%}
 
-![rsvepi](rsvepi.png){width=100%}
+![rsvepi](rsvepi.png){width=80%}

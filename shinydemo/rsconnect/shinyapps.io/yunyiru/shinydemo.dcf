@@ -1,0 +1,12 @@
+name: shinydemo
+title: shinydemo
+username: yunyiru
+account: yunyiru
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13613584
+bundleId: 9535329
+url: https://yunyiru.shinyapps.io/shinydemo/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
