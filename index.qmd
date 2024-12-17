@@ -41,13 +41,10 @@ library('lubridate')
 library('knitr')
 library('RSocrata') # a package to read socrata data - which is the way CDC datasets are stored. see CRAN documentation here: https://cran.r-project.org/web/packages/RSocrata/index.html
 library('openmeteo') # a package to scrap data from openmeteo API. see CRAN documentation here: https://cran.r-project.org/web/packages/openmeteo/openmeteo.pdf
-<<<<<<< HEAD
 library('reshape2')
-=======
 library('shiny')
 library('shinydashboard')
 library('shinyjs')
->>>>>>> 4f8d14533d5bfc6f436def413b733879f4c60536
 ```
 
 ## Load Data
@@ -225,12 +222,10 @@ week_weather_melted <- melt(week_weather,
                           value.name = "value")
 
 # bind RESPdat.clean and week_weather together
-# bind RESPdat.clean and week_weather together
 RESP_weather <- left_join(RESPdat.clean, week_weather, by = c("y_w", "site", "year", "week"))
 RESP_weather <- RESP_weather %>%
   drop_na() %>%
   mutate(weekly_rate = as.numeric(weekly_rate), 
-<<<<<<< HEAD
          cumulative_rate = as.numeric(cumulative_rate))
 
 # have a look!
@@ -238,15 +233,6 @@ kable(head(RESP_weather))
 
 # save data
 saveRDS(RESP_weather, file = here("data", "RESP_weather.RDS"))
-=======
-         cumulative_rate = as.numeric(cumulative_rate))# bind RESPdat.clean and week_weather together
-RESP_weather <- left_join(RESPdat.clean, week_weather, by = c("y_w", "site", "year", "week"))
-RESP_weather <- RESP_weather %>%
-  drop_na() %>%
-  mutate(weekly_rate = as.numeric(weekly_rate), 
-         cumulative_rate = as.numeric(cumulative_rate))
-
->>>>>>> 4f8d14533d5bfc6f436def413b733879f4c60536
 ```
 
 ## Data Visualization
@@ -292,6 +278,16 @@ ggplot(RESP_weather_RSV, aes(x = week, y = weekly_rate, color = as.character(yea
       x = 'Epidemiology Week', 
       color = 'Year'
    )
+
+# corr heatmap
+# all relationship
+library('corrplot')
+RESP_weather_corr <- RESP_weather %>%
+  select(-cumulative_rate, -year, -week)
+corr_matrix <- cor(RESP_weather_corr %>% select_if(is.numeric), use = 'complete.obs')
+corrplot(corr_matrix, type = 'lower', diag = FALSE)
+
+# 
 ```
 
 ```{r}
@@ -437,14 +433,4 @@ server <- function(input, output) {
 shinyApp(ui, server)
 
 
-```
-
-## Machine Learning
-
-```{r ml}
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 4f8d14533d5bfc6f436def413b733879f4c60536
 ```
