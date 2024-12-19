@@ -127,31 +127,128 @@ ul.task-list li input[type="checkbox"] {
 <p>Weather data were scrapped from Openmeteo API.</p>
 <p><a href="https://open-meteo.com/">Openmeteo API</a></p>
 </section>
+<section id="data-dictionary" class="level2">
+<h2 class="anchored" data-anchor-id="data-dictionary">Data Dictionary</h2>
+<p>Here is an overview of the combined dataset of weekly environmental parameters and respiratory virus-related hospitalization rates.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 66%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Description</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>site</td>
+<td>U.S. state participated in RESP-Net</td>
+<td>/</td>
+</tr>
+<tr class="even">
+<td>weekly_rate</td>
+<td>weekly respiratory virus-related hospitalization rate</td>
+<td>per 100,000</td>
+</tr>
+<tr class="odd">
+<td>cumulative_rate</td>
+<td>cumulative respiratory virus-related hospitalization rate</td>
+<td>per 100,000</td>
+</tr>
+<tr class="even">
+<td>date</td>
+<td>date at end of the corresponding epidemiological week</td>
+<td>/</td>
+</tr>
+<tr class="odd">
+<td>year</td>
+<td>year</td>
+<td>/</td>
+</tr>
+<tr class="even">
+<td>week</td>
+<td>epidemiological week</td>
+<td>/</td>
+</tr>
+<tr class="odd">
+<td>y_w</td>
+<td>year and epidemiological week combined</td>
+<td>/</td>
+</tr>
+<tr class="even">
+<td>pathogen</td>
+<td>respiratory virus type</td>
+<td>/</td>
+</tr>
+<tr class="odd">
+<td>temp_max</td>
+<td>maximum daily temperature (weekly average)</td>
+<td>°C</td>
+</tr>
+<tr class="even">
+<td>temp_min</td>
+<td>minimum daily temperature (weekly average)</td>
+<td>°C</td>
+</tr>
+<tr class="odd">
+<td>precip_sum</td>
+<td>sum of precipitation - rain and snow (weekly average)</td>
+<td>mm</td>
+</tr>
+<tr class="even">
+<td>precip_hr</td>
+<td>duration of precipitation - rain and snow (weekly average)</td>
+<td>hours</td>
+</tr>
+<tr class="odd">
+<td>sunshine</td>
+<td>duration of sunshine (weekly average)</td>
+<td>seconds</td>
+</tr>
+<tr class="even">
+<td>daylight</td>
+<td>duration of daylight (weekly average)</td>
+<td>seconds</td>
+</tr>
+<tr class="odd">
+<td>wind_speed_max</td>
+<td>maximum windspeed (weekly average)</td>
+<td>km/h</td>
+</tr>
+<tr class="even">
+<td>wind_gusts_max</td>
+<td>maximum gusts (weekly average)</td>
+<td>km/h</td>
+</tr>
+<tr class="odd">
+<td>wind_direction</td>
+<td>dominant wind direction (weekly average)</td>
+<td>°</td>
+</tr>
+<tr class="even">
+<td>shortwave</td>
+<td>sum of solar radiation (weekly average)</td>
+<td>MJ/m²</td>
+</tr>
+<tr class="odd">
+<td>evapo</td>
+<td>sum of ET0 Reference Evapotranspiration of a well watered grass field (weekly average)</td>
+<td>mm</td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="data-visualization" class="level2">
 <h2 class="anchored" data-anchor-id="data-visualization">Data Visualization</h2>
-<section id="relationship-between-disease-rates-and-environmental-factors" class="level3">
-<h3 class="anchored" data-anchor-id="relationship-between-disease-rates-and-environmental-factors">Relationship Between Disease Rates and Environmental Factors</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="heatmap.png" class="img-fluid figure-img" style="width:50.0%"></p>
-<figcaption>Heatmap</figcaption>
-</figure>
-</div>
-</section>
-<section id="summary-of-resp-net-data-from-2018-to-2024" class="level3">
-<h3 class="anchored" data-anchor-id="summary-of-resp-net-data-from-2018-to-2024">Summary of RESP-NET Data from 2018 to 2024</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="fluepi.png" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption>fluepi</figcaption>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="rsvepi.png" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption>rsvepi</figcaption>
-</figure>
-</div>
+<p><img src="flunet.png" class="img-fluid" style="width:80.0%"></p>
+<p><img src="rsvnet.png" class="img-fluid" style="width:80.0%"></p>
+<section id="correlation-heatmap" class="level3">
+<h3 class="anchored" data-anchor-id="correlation-heatmap">Correlation Heatmap</h3>
+<p><img src="corrplot.png" class="img-fluid" style="width:50.0%"></p>
 </section>
 </section>
 </section>
