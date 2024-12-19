@@ -1,5 +1,5 @@
 ---
-title: "Weather-Respiratory Diseases Correlation Explorer"
+title: "Weather-Respiratory Diseases Correlation Explorer: Data Analysis"
 author: 
   - name: Team MMI
 description: "JHSPH 140.777 Statistical Programming Final Project."
@@ -9,7 +9,7 @@ bibliography:
   - my-refs.bib
 ---
 
-# Team and Contacts
+# Team
 
 | Name         |  JHED     | E-mail           |
 |--------------|-----------|------------------|
@@ -277,7 +277,11 @@ ggplot(RESP_weather_RSV, aes(x = week, y = weekly_rate, color = as.character(yea
       x = 'Epidemiology Week', 
       color = 'Year'
    )
+```
 
+### Correlation Heatmap
+
+```{r}
 # corr heatmap
 # all relationship
 library('corrplot')
@@ -285,6 +289,4 @@ RESP_weather_corr <- RESP_weather %>%
   select(-cumulative_rate, -year, -week)
 corr_matrix <- cor(RESP_weather_corr %>% select_if(is.numeric), use = 'complete.obs')
 corrplot(corr_matrix, type = 'lower', diag = FALSE)
-
-# 
 ```
