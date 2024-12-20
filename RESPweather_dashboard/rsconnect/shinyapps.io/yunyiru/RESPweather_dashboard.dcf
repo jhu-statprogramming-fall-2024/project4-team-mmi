@@ -4,8 +4,8 @@ username: yunyiru
 account: yunyiru
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
-appId: 13624058
-bundleId: 9546129
+appId: 13625272
+bundleId: 9547955
 url: https://yunyiru.shinyapps.io/RESPweather_dashboard/
 version: 1
 asMultiple: FALSE

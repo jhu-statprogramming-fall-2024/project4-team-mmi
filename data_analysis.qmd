@@ -288,5 +288,20 @@ library('corrplot')
 RESP_weather_corr <- RESP_weather %>%
   select(-cumulative_rate, -year, -week)
 corr_matrix <- cor(RESP_weather_corr %>% select_if(is.numeric), use = 'complete.obs')
-corrplot(corr_matrix, type = 'lower', diag = FALSE)
+corrplot(corr_matrix, 
+         type = 'lower', 
+         diag = FALSE,
+         title = "Correlation Heatmap Showing Relationship Between Weekly Hospitalization Rates and Environmental Parameters")
+
+# RSV
+RESP_weather_corr_rsv <- RESP_weather_corr %>%
+  filter(pathogen == "RSV")
+corr_matrix_rsv <- cor(RESP_weather_corr_rsv %>% select_if(is.numeric), use = 'complete.obs')
+corrplot(corr_matrix_rsv, type = 'lower', diag = FALSE)
+
+# Flu
+RESP_weather_corr_flu <- RESP_weather_corr %>%
+  filter(pathogen == "influenza")
+corr_matrix_flu <- cor(RESP_weather_corr_flu %>% select_if(is.numeric), use = 'complete.obs')
+corrplot(corr_matrix_flu, type = 'lower', diag = FALSE)
 ```
