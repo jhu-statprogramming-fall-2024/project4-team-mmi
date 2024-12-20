@@ -27,6 +27,10 @@ Climate and weather conditions can influence the activity and spread of both vir
 
 - **Environmental Parameters**: Weather data were scrapped from [Openmeteo API](https://open-meteo.com/).
 
+# Repo
+
+See data analysis codes in `index.qmd`; rshinydashboard codes in `RESPweather_dashboard`.
+
 # About Us
 
 **Team MMI** are **Yunyi Ru** (email: yru3@jh.edu; GitHub: https://github.com/yunyi-ru) and **Juanyu Zhang** (jzhan398@jh.edu; GitHub: https://github.com/JuYZhang). 
