@@ -26,7 +26,7 @@ This dashboard uses [CDC RESP-NET data](## Respiratory Virus Related Hospitaliza
 
 ### Weather Explorer
 
-This dashboard integrated [environmental parameter data](### Environmental Parameters) from openmeteo API and respiratory virus-associated hospitalization rate data to perform regression analysis. The user can select year, state, weather variable and pathogen of interest using the interactive filters. 
+This dashboard integrates [environmental parameter data](### Environmental Parameters) from openmeteo API and respiratory virus-associated hospitalization rate data to perform regression analysis. The user can select year, state, weather variable and pathogen of interest using the interactive filters. 
 
 ## Data
 
@@ -48,7 +48,7 @@ Disease rate data were scrapped from  [CDC RESP-NET](https://data.cdc.gov/Public
 
 ### Environmental Parameters
 
-Weather data were scrapped from [Openmeteo API](https://open-meteo.com/).å
+Weather data were scrapped from [Openmeteo API](https://open-meteo.com/).
 
 #### Correlation Heatmap
 
