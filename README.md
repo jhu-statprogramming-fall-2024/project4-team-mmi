@@ -1,12 +1,3 @@
----
-title: "Weather-Respiratory Diseases Correlation Explorer"
-author: 
-  - name: Team MMI
-description: "JHSPH 140.777 Statistical Programming Final Project."
-date: 2024-12-11
-knitr: true
----
-
 # Project
 
 This [**Weather-Respiratory Diseases Correlation Explorer**](https://yunyiru.shinyapps.io/RESPweather_dashboard/) R shinydashboard aims to investigate the relationship between climate and weather-related conditions and outbreaks of two respiratory viruses, **influenza** and **respiratory syncytial virus (RSV)**.
